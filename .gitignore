@@ -1,0 +1,12 @@
+[Oo]bj/
+[Bb]in/
+*.user
+/TestResults
+*.vspscc
+*.vssscc
+*.suo
+*.[Cc]ache
+*.csproj.user
+/packages/
+msbuild.log
+*.psess
