@@ -8,13 +8,17 @@ Supports SSL for inbound and outbound connections.
 
 ## Uses/Why? ##
 
-I wrote it cause I needed to transparently manipulate requests going from one application to a web service. The application made Http requests to a server and I needed a quick-fix solution for tweaking the requests/responses without either end knowing about it. Since the requests could potentially be rather large I decided it would be a good time to dig into the async goodned in C# 5 and make the middle man server fully asynchronous.
+I wrote it cause I needed to transparently manipulate requests going from one application to a web service. The application made Http requests to a server and I needed a quick-fix solution for tweaking the requests/responses without either end knowing about it. Since the requests could potentially be rather large I decided it would be a good time to dig into the async goodness in C# 5 and make the middle man server fully asynchronous.
 
-The hack evolved and evolved until it had a life of it's own so I'm putting it out there in case someone has similar problems.
+The hack evolved until it had a life of it's own so I'm putting it out there in case someone has similar problems.
 
 ## Is it a web server?
 
-The short answer: no. Longer: It certainly can be used as a web server and it's more than capable of parsing requests and generating responses. But it's primary use case is to read requests and (with or without modification) transmit them to a proper web server and deliver the response back.
+TL;DR: no
+
+It's more than capable of parsing requests and generating responses so there's nothing stopping you from using it as a stand-alone web server. But the primary use case is to read requests and (with or without modification) send them to a proper web server and deliver the response back.
+
+As such Switchboard can rely on a competent fully capable http server such as IIS, lighttpd or Apache to deal with all the intricacies of the HTTP protocol and deal with shuffling data and tweaking requests and responses.
 
 ### Potential uses
 The lib is still really early in development and it's lacking in several aspects but here's some potential _future_ use cases.
@@ -22,6 +26,7 @@ The lib is still really early in development and it's lacking in several aspects
  * Load balancing/reverse proxy
  * Reverse proxy with cache (coupled with a good cache provider)
  * In flight message logging for web services either for temporary debugging or more permanent logging when there's zero or little control over the endpoints.
+ * AJAX proxy
 
 ### Notes/TODO ###
 
@@ -36,6 +41,10 @@ The original purpose of Switchboard was to run in a friendly environment. Securi
 Future improvment: Ability to establish outbound connection immediately after
 inbound connection is established (before request is read)
 thread safe openoutboundconnection
+
+Chunked transfer support is currently limited. It works great for streaming but there's no support for merging chunks into a coherent response. Beware.
+
+Documentation is severely lacking.
 
 ## License ##
 
