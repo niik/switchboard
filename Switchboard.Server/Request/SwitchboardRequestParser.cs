@@ -10,7 +10,7 @@ namespace Switchboard.Server
 {
     internal class SwitchboardRequestParser
     {
-        private sealed class ParseDelegate : IHttpParserHandler
+        private sealed class ParseDelegate : IHttpRequestParserDelegate
         {
             private string headerName;
 
@@ -19,16 +19,25 @@ namespace Switchboard.Server
             public bool complete;
             public bool headerComplete;
 
-            void IHttpParserHandler.OnBody(HttpParser parser, ArraySegment<byte> data) { requestBodyStart = data; }
-            void IHttpParserHandler.OnFragment(HttpParser parser, string fragment) { }
-            void IHttpParserHandler.OnHeaderName(HttpParser parser, string name) { headerName = name; }
-            void IHttpParserHandler.OnHeaderValue(HttpParser parser, string value) { request.Headers.Add(headerName, value); }
-            void IHttpParserHandler.OnHeadersEnd(HttpParser parser) { this.headerComplete = true; }
-            void IHttpParserHandler.OnMessageBegin(HttpParser parser) { }
-            void IHttpParserHandler.OnMessageEnd(HttpParser parser) { this.complete = true; }
-            void IHttpParserHandler.OnMethod(HttpParser parser, string method) { request.Method = method; }
-            void IHttpParserHandler.OnQueryString(HttpParser parser, string queryString) { }
-            void IHttpParserHandler.OnRequestUri(HttpParser parser, string requestUri) { request.RequestUri = requestUri; }
+			public void OnBody(HttpParser parser, ArraySegment<byte> data) { requestBodyStart = data; }
+			public void OnFragment(HttpParser parser, string fragment) { }
+			public void OnHeaderName(HttpParser parser, string name) { headerName = name; }
+			public void OnHeaderValue(HttpParser parser, string value) { request.Headers.Add(headerName, value); }
+			public void OnHeadersEnd(HttpParser parser) { this.headerComplete = true; }
+			public void OnMessageBegin(HttpParser parser) { }
+			public void OnMessageEnd(HttpParser parser) { this.complete = true; }
+			public void OnMethod(HttpParser parser, string method) { request.Method = method; }
+			public void OnQueryString(HttpParser parser, string queryString) { }
+			public void OnRequestUri(HttpParser parser, string requestUri) { request.RequestUri = requestUri; }
+
+			#region IHttpRequestParserDelegate implementation
+
+			public void OnPath (HttpParser parser, string path)
+			{
+				//throw new NotImplementedException ();
+			}
+
+			#endregion
         }
 
         public SwitchboardRequestParser()
